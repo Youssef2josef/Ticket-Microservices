@@ -1,16 +1,15 @@
 package com.stageb2m.ticketservice.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "ticket_log")
 public class TicketLog {
@@ -19,10 +18,12 @@ public class TicketLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer ticketId; // le ticket concerné
+    private Long ticketId;
+    private String title;
     private String fieldChanged;
     private String oldValue;
     private String newValue;
+    private String details;
     private String changedBy;
     private LocalDateTime changedAt;
 }

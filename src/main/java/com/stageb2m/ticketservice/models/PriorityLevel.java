@@ -1,11 +1,14 @@
 package com.stageb2m.ticketservice.models;
 
+import lombok.Getter;
+
+@Getter
 public enum PriorityLevel {
-    LOW(1),
-    MEDIUM(2),
-    HIGH(3),
-    CRITICAL(4),
-    BLOCKER(5);
+    Low(1),
+    Meduim(2),
+    High(3),
+    Critical(4),
+    Blocker(5);
 
     private final int level;
 
@@ -13,7 +16,4 @@ public enum PriorityLevel {
         this.level = level;
     }
 
-    public int getLevel() {
-        return level;
-    }
 }

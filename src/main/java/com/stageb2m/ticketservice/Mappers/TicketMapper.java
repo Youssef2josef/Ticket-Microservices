@@ -1,8 +1,13 @@
 package com.stageb2m.ticketservice.Mappers;
 
+import com.stageb2m.ticketservice.dto.AttachmentDto;
 import com.stageb2m.ticketservice.dto.TicketDtoItSupportResponse;
 import com.stageb2m.ticketservice.dto.TicketDtoResponse;
-import com.stageb2m.ticketservice.models.Ticket;
+import com.stageb2m.ticketservice.models.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 public class TicketMapper {
 
@@ -19,12 +24,16 @@ public class TicketMapper {
                 .itSupportEmail(ticket.getItSupportEmail())
                 .createdAt(ticket.getCreatedAt())
                 .updatedAt(ticket.getUpdatedAt())
-                .finishedAt(ticket.getFinishedAt())
+                .finishedAt(ticket.getArchivedAt())
                 .noteUpdatedDescription(ticket.getNoteUpdatedDescription())
                 .noteUpdatedBy(ticket.getNoteUpdatedBy())
                 .employeeName(ticket.getEmployeeName())
                 .itSupportId(ticket.getItSupportId())
-                .attachments(ticket.getAttachments())
+                .choix(ticket.getChoix())
+                .section(ticket.getSection())
+                .storyPoint(ticket.getStoryPoint())
+                .remaining(ticket.getRemaining())
+                .attachments(TicketMapper.toAttachmentDto(ticket.getAttachments()))
                 .build();
     }
 
@@ -41,7 +50,30 @@ public class TicketMapper {
                 .itSupportEmail(ticket.getItSupportEmail())
                 .employeeName(ticket.getEmployeeName())
                 .noteUpdatedDescription(ticket.getNoteUpdatedDescription())
-                .attachments(ticket.getAttachments())
+                .choix(ticket.getChoix())
+                .section(ticket.getSection())
+                .storyPoint(ticket.getStoryPoint())
+                .remaining(ticket.getRemaining())
+                .attachments(TicketMapper.toAttachmentDto(ticket.getAttachments()))
                 .build();
+    }
+
+    public static List<AttachmentDto> toAttachmentDto(List<Attachment> attachments){
+        if (attachments == null) return List.of();
+
+        return attachments.stream()
+                .map(attachment -> new AttachmentDto(
+                        attachment.getFilename(),
+                        attachment.getMimeType(),
+                        attachment.getFormat()))
+                .toList();
+    }
+    public static PriorityLevel fromLevel(int level) {
+        for (PriorityLevel p : PriorityLevel.values()) {
+            if (p.getLevel() == level) {
+                return p;
+            }
+        }
+        throw new IllegalArgumentException("Invalid priority level: " + level);
     }
 }
