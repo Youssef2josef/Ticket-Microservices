@@ -1,5 +1,6 @@
 package com.stageb2m.ticketservice.service;
 
+import com.stageb2m.ticketservice.dto.TicketDtoRequest;
 import com.stageb2m.ticketservice.dto.TicketDtoResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,13 +11,9 @@ public interface CreateService {
     /**
      * Creates a new ticket with the provided details and attachments.
      *
-     * @param description   The description of the ticket.
-     * @param employeeName  The name of the employee creating the ticket.
-     * @param prefix        The prefix for the ticket title.
+     * @param ticketDtoRequest   The infos of creation request of the ticket.
      * @param attachments   A list of attachments for the ticket.
      * @return A map containing the created ticket details.
      */
-    Map<String, TicketDtoResponse> createTicket(String description, String employeeName, String prefix,
-                                                List<MultipartFile> attachments);
-
+    Map<String, TicketDtoResponse> createTicket(TicketDtoRequest ticketDtoRequest, List<MultipartFile> attachments);
 }

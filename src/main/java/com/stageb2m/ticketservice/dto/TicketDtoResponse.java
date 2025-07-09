@@ -1,14 +1,18 @@
 package com.stageb2m.ticketservice.dto;
 
 import com.stageb2m.ticketservice.models.Attachment;
+import com.stageb2m.ticketservice.models.Choix;
+import com.stageb2m.ticketservice.models.Section;
 import com.stageb2m.ticketservice.models.Status;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @Builder
-@Data
 public class TicketDtoResponse {
     private String title;
     private String libelle;
@@ -19,5 +23,9 @@ public class TicketDtoResponse {
     private String itSupportEmail;
     private String employeeName;
     private String noteUpdatedDescription;
-    private List<Attachment> attachments;
+    private Choix choix;
+    private Section section;
+    private int storyPoint;
+    private int remaining;
+    private List<AttachmentDto> attachments;
 }

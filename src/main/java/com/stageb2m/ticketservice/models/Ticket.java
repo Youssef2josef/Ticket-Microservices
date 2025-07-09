@@ -4,10 +4,7 @@ package com.stageb2m.ticketservice.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,15 +13,18 @@ import java.util.Random;
 @Entity
 @Table(name = "ticket_db")
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(unique = true, updatable = false)
     private String serialNumber;
+    //Attribut pour distinguer les ticket sous format: prefix-serialNumber-employeeName
+    @Column(unique = true, updatable = false)
     private String title;
+    //Titre globale de ticket
     private String libelle;
     private String description;
     private Status status;
@@ -34,11 +34,16 @@ public class Ticket {
     private String itSupportEmail;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime finishedAt;
+    private LocalDateTime archivedAt;
     private String noteUpdatedDescription;
     private String noteUpdatedBy;
     private String employeeName;
-    private String itSupportId;
+    private int itSupportId;
+    private Choix choix;
+    private Section section;
+    //Durée de ticket
+    private int storyPoint;
+    private int remaining;
 
     @ElementCollection
     @CollectionTable(

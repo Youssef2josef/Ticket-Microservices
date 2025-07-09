@@ -1,15 +1,17 @@
 package com.stageb2m.ticketservice.controller;
 
+import com.stageb2m.ticketservice.Mappers.TicketMapper;
+import com.stageb2m.ticketservice.dto.DisplayTicketRequest;
 import com.stageb2m.ticketservice.dto.TicketDtoItSupportResponse;
 import com.stageb2m.ticketservice.dto.TicketDtoResponse;
+import com.stageb2m.ticketservice.models.Choix;
+import com.stageb2m.ticketservice.models.Section;
 import com.stageb2m.ticketservice.service.DisplayTicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -25,51 +27,110 @@ public class DisplayTicketController {
         List<TicketDtoItSupportResponse> tickets = displayTicketService.displayAllTickets();
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/status")
-    public ResponseEntity<List<TicketDtoItSupportResponse>> displayTicketsByStatus(String status) {
+    @PostMapping("/status")
+    public ResponseEntity<List<TicketDtoItSupportResponse>> displayTicketsByStatus(
+            @RequestBody String status) {
         List<TicketDtoItSupportResponse> tickets = displayTicketService.displayTicketsByStatus(status);
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/it-support")
-    public ResponseEntity<List<TicketDtoItSupportResponse>> displayTicketsByItSupport(String itSupportName) {
+    @PostMapping("/it-support")
+    public ResponseEntity<List<TicketDtoItSupportResponse>> displayTicketsByItSupport(
+            @RequestBody String itSupportName) {
         List<TicketDtoItSupportResponse> tickets = displayTicketService.displayTicketsByItSupport(itSupportName);
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/employee")
-    public ResponseEntity<List<TicketDtoResponse>> displayTicketsByEmployee(String employeeName) {
+    @PostMapping("/employee")
+    public ResponseEntity<List<TicketDtoResponse>> displayTicketsByEmployee(
+            @RequestBody String employeeName) {
         List<TicketDtoResponse> tickets = displayTicketService.displayTicketsByEmployee(employeeName);
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/title/employee")
-    public ResponseEntity<TicketDtoResponse> displayTicketByTitleEmployee(String title) {
+    @PostMapping("/title/employee")
+    public ResponseEntity<TicketDtoResponse> displayTicketByTitleEmployee(
+            @RequestBody String title) {
         TicketDtoResponse ticket = displayTicketService.displayTicketByTitleEmployee(title);
         return ticket != null ? ResponseEntity.ok(ticket) : ResponseEntity.notFound().build();
     }
-    @GetMapping("/title/it-support")
-    public ResponseEntity<TicketDtoItSupportResponse> displayTicketByTitleItSupport(String title) {
+    @PostMapping("/title/it-support")
+    public ResponseEntity<TicketDtoItSupportResponse> displayTicketByTitleItSupport(
+            @RequestBody String title) {
         TicketDtoItSupportResponse ticket = displayTicketService.displayTicketByTitleItSupport(title);
         return ticket != null ? ResponseEntity.ok(ticket) : ResponseEntity.notFound().build();
     }
-    @GetMapping("/priority")
-    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriority(String priority) {
+    @PostMapping("/priority")
+    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriority(
+            @RequestBody String priority) {
         List<TicketDtoResponse> tickets = displayTicketService.displayAllTicketsByPriority(priority);
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/priority/status")
-    public ResponseEntity<List<TicketDtoItSupportResponse>> displayAllTicketsByPriorityAndStatus(String priority, String status) {
-        List<TicketDtoItSupportResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndStatus(priority, status);
+    @PostMapping("/priority/status")
+    public ResponseEntity<List<TicketDtoItSupportResponse>> displayAllTicketsByPriorityAndStatus(
+            @RequestBody DisplayTicketRequest displayTicketRequest) {
+        List<TicketDtoItSupportResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndStatus(
+                displayTicketRequest.getPriority(), displayTicketRequest.getStatus());
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/priority/employee")
-    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriorityAndEmployee(String priority, String employeeName) {
-        List<TicketDtoResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndEmployee(priority, employeeName);
+    @PostMapping("/priority/employee")
+    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriorityAndEmployee(
+            @RequestBody DisplayTicketRequest displayTicketRequest) {
+        List<TicketDtoResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndEmployee(
+                displayTicketRequest.getPriority(), displayTicketRequest.getEmployeeName());
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
-    @GetMapping("/priority/employee/status")
-    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriorityAndEmployeeAndStatus(String priority, String employeeName, String status) {
-        List<TicketDtoResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndStatusAndEmployee(priority, employeeName, status);
+    @PostMapping("/priority/employee/status")
+    public ResponseEntity<List<TicketDtoResponse>> displayAllTicketsByPriorityAndEmployeeAndStatus(
+            @RequestBody DisplayTicketRequest displayTicketRequest) {
+        List<TicketDtoResponse> tickets = displayTicketService.displayAllTicketsByPriorityAndStatusAndEmployee(
+                displayTicketRequest.getPriority(), displayTicketRequest.getStatus(),
+                displayTicketRequest.getEmployeeName());
+        return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
+    }
+    @GetMapping("/inProgress")
+    public ResponseEntity<List<TicketDtoItSupportResponse>> displayInProgressTickets() {
+        List<TicketDtoItSupportResponse> tickets = displayTicketService.displayTopInProgressTickets();
+        return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
+    }
+    @GetMapping("/closed")
+    public ResponseEntity<List<TicketDtoItSupportResponse>> displayClosedTickets() {
+        List<TicketDtoItSupportResponse> tickets = displayTicketService.displayTopClosedTickets();
+        return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
+    }
+    @GetMapping("/inProgress/employee")
+    public ResponseEntity<List<TicketDtoResponse>> displayInProgressTicketsByEmployee(
+            @RequestBody String employeeName) {
+        List<TicketDtoResponse> tickets = displayTicketService
+                .displayTopInProgressTicketsByEmployee(employeeName);
+        return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
+    }
+    @GetMapping("/closed/employee")
+    public ResponseEntity<List<TicketDtoResponse>> displayClosedTicketsByEmployee(
+            @RequestBody String employeeName) {
+        List<TicketDtoResponse> tickets = displayTicketService
+                .displayTopClosedTicketsByEmployee(employeeName);
+        return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
+    }
+    @GetMapping("/open/employee")
+    public ResponseEntity<List<TicketDtoResponse>> displayViewedTicketsByEmployee(
+            @RequestBody String employeeName) {
+        List<TicketDtoResponse> tickets = displayTicketService
+                .displayTopViewedTicketsByEmployee(employeeName);
         return tickets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(tickets);
     }
 
 
+    @GetMapping("/sections")
+    public ResponseEntity<List<String>> getAllSections() {
+        List<String> sections = Arrays.stream(Section.values())
+                .map(Section::getLabel)
+                .toList();
+        return ResponseEntity.ok(sections);
+    }
+
+    @GetMapping("/choix")
+    public ResponseEntity<List<String>> getAllChoices() {
+        List<String> choices = Arrays.stream(Choix.values())
+                .map(Choix::getLabel)
+                .toList();
+        return ResponseEntity.ok(choices);
+    }
 }

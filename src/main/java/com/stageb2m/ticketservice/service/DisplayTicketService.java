@@ -79,5 +79,37 @@ public interface DisplayTicketService {
      * @return A list of tickets assigned to the correspondence priority and employee.
      */
     List<TicketDtoResponse> displayAllTicketsByPriorityAndEmployee(String priority, String employeeName);
-
+    /**
+     * Displays the top 10 most recent tickets that are currently in progress.
+     *
+     * @return A list of the top 10 most recent tickets in progress.
+     */
+    List<TicketDtoItSupportResponse> displayTopInProgressTickets();
+    /**
+     * Displays the top 40 most recent tickets that are closed.
+     *
+     * @return A list of the top 40 most recent closed tickets.
+     */
+    List<TicketDtoItSupportResponse> displayTopClosedTickets();
+    /**
+     * Displays the top 10 most recent tickets in progress assigned to a specific employee.
+     *
+     * @param employeeName The name of the employee whose tickets are to be displayed.
+     * @return A list of the top 10 most recent tickets in progress assigned to the employee.
+     */
+    List<TicketDtoResponse> displayTopInProgressTicketsByEmployee(String employeeName);
+    /**
+     * Displays the top 10 most recent tickets that are open and assigned to a specific employee.
+     *
+     * @param employeeName The name of the employee whose tickets are to be displayed.
+     * @return A list of the top 10 most recent open tickets assigned to the employee.
+     */
+    List<TicketDtoResponse> displayTopViewedTicketsByEmployee(String employeeName);
+    /**
+     * Displays the top 10 most recent closed tickets assigned to a specific employee.
+     *
+     * @param employeeName The name of the employee whose tickets are to be displayed.
+     * @return A list of the top 10 most recent closed tickets assigned to the employee.
+     */
+    List<TicketDtoResponse> displayTopClosedTicketsByEmployee(String employeeName);
 }
