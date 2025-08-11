@@ -17,6 +17,7 @@ public class UpdateTicketController {
     @Autowired
     UpdateTicketService updateTicketService;
 
+    // It support
     @PutMapping("/update")
     public Map<String, TicketDtoItSupportResponse> updateTicket(@RequestBody UpdateTicketRequest request) {
         return Map.of("ticket",updateTicketService.updateTicket(request).get("ticket"));

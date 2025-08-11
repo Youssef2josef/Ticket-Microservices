@@ -18,6 +18,7 @@ public class ArchiveTicketController {
     @Autowired
     private ArchiveTicketService archiveTicketService;
 
+    // It support
     @PostMapping()
     public ResponseEntity<Map<String,TicketDtoResponse>> archiveTicket(
             @RequestBody ArchiveTicketRequest archiveTicketRequest) {

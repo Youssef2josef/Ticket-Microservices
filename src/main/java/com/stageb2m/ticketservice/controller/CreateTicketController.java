@@ -19,6 +19,8 @@ import java.util.Map;
 public class CreateTicketController {
     @Autowired
     CreateService createService;
+
+    // Employee
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> createTicket(
             @RequestPart("ticket") TicketDtoRequest ticketDtoRequest,
